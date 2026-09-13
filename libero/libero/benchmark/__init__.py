@@ -41,7 +41,17 @@ class Task(NamedTuple):
     init_states_file: str
 
 
+# Constraint-type flags prefixed onto *_constrained suite filenames (e.g.
+# "spatial_pick_up_..."). They're for humans/organization, not part of the
+# task instruction, so strip them before deriving the language string below.
+_CONSTRAINT_FLAG_PREFIXES = ("spatial_", "temporal_", "logical_")
+
+
 def grab_language_from_filename(x):
+    for prefix in _CONSTRAINT_FLAG_PREFIXES:
+        if x.startswith(prefix):
+            x = x[len(prefix) :]
+            break
     if x[0].isupper():  # LIBERO-100
         if "SCENE10" in x:
             language = " ".join(x[x.find("SCENE") + 8 :].split("_"))
@@ -59,6 +69,7 @@ libero_suites = [
     "libero_goal",
     "libero_90",
     "libero_10",
+    "libero_spatial_constrained",
 ]
 task_maps = {}
 max_len = 0
@@ -114,7 +125,9 @@ class Benchmark(abc.ABC):
 
     def _make_benchmark(self):
         tasks = list(task_maps[self.name].values())
-        if self.name == "libero_90":
+        if self.name == "libero_90" or self.name.endswith("_constrained"):
+            # These suites don't have a fixed 10-task size, so the
+            # pre-computed 10-task permutations in `task_orders` don't apply.
             self.tasks = tasks
         else:
             print(f"[info] using task orders {task_orders[self.task_order_index]}")
@@ -216,4 +229,12 @@ class LIBERO_100(Benchmark):
     def __init__(self, task_order_index=0):
         super().__init__(task_order_index=task_order_index)
         self.name = "libero_100"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_SPATIAL_CONSTRAINED(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_spatial_constrained"
         self._make_benchmark()

@@ -13,7 +13,7 @@ class KeepOutCylinder(CylinderObject):
     the simulation state.
     """
 
-    def __init__(self, name="keep_out_cylinder", joints=None, size=(0.03, 0.09)):
+    def __init__(self, name="keep_out_cylinder", joints=None, size=(0.02, 0.09)):
         super().__init__(
             name=name,
             size=size,

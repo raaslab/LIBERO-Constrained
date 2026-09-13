@@ -11,6 +11,14 @@ libero_task_map = {
         "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
         "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
     ],
+    "libero_spatial_constrained": [
+        "spatial_pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_while_avoiding_the_red_obstacles",
+        "spatial_pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate_while_avoiding_the_red_obstacles",
+        "temporal_pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_within_20_to_30_seconds",
+        "temporal_wait_at_least_5_seconds_before_picking_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+        "logical_pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_or_on_top_of_the_cabinet",
+        "logical_place_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_but_place_it_on_the_plate_if_near_the_stove",
+    ],
     "libero_object": [
         "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
         "pick_up_the_cream_cheese_and_place_it_in_the_basket",
