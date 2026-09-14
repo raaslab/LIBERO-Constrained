@@ -1,21 +1,13 @@
 {
+  "schema_version": 1,
   "constraint_type": "temporal",
   "base_task": "spatial_pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_while_avoiding_the_red_obstacles",
-  "description": "The first grasp of the bowl must not occur before 5 seconds after the episode starts.",
-  "time_unit": "seconds",
-  "reference": "episode_start",
+  "description": "The bowl must not be picked up before 5 seconds into the episode.",
+  "note": "No dedicated 'Grasped' predicate exists in this engine; using a 'displaced from start pose' proxy for 'has been picked up'.",
   "events": {
-    "grasp_bowl": {
-      "predicate": "Grasp",
-      "args": ["akita_black_bowl_1"]
-    }
+    "bowl_moved": { "type": "displaced", "object": "akita_black_bowl_1", "tolerance_m": 0.02 }
   },
-  "constraints": [
-    {
-      "event": "grasp_bowl",
-      "bound": "at_least",
-      "min": 5.0,
-      "max": null
-    }
+  "checks": [
+    { "type": "time_window", "event": "bowl_moved", "min_s": 5.0 }
   ]
 }

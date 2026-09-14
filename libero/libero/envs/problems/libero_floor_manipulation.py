@@ -131,7 +131,9 @@ class Libero_Floor_Manipulation(BDDLBaseDomain):
 
     def _check_success(self):
         """
-        Check if the goal is achieved. Consider conjunction goals at the moment
+        Check if the goal is achieved. The top-level goal clauses are ANDed
+        together; each clause may itself nest And/Or/Not connectives (see
+        `_eval_predicate`).
         """
         goal_state = self.parsed_problem["goal_state"]
         result = True
@@ -140,7 +142,18 @@ class Libero_Floor_Manipulation(BDDLBaseDomain):
         return result
 
     def _eval_predicate(self, state):
-        if len(state) == 3:
+        connective = state[0]
+        # Nested logical connectives (e.g. from an (Or ...) or (Not ...) goal
+        # clause that isn't the outermost (And ...), which the parser leaves
+        # unstripped). Checked before the arity-based dispatch below, since
+        # e.g. an "or" of two binary predicates is also a length-3 list.
+        if connective == "and":
+            return all(self._eval_predicate(substate) for substate in state[1:])
+        elif connective == "or":
+            return any(self._eval_predicate(substate) for substate in state[1:])
+        elif connective == "not":
+            return not self._eval_predicate(state[1])
+        elif len(state) == 3:
             # Checking binary logical predicates
             predicate_fn_name = state[0]
             object_1_name = state[1]

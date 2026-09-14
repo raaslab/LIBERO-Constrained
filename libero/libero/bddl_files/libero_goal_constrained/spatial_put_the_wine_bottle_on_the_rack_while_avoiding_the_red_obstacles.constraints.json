@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "constraint_type": "spatial",
+  "base_task": "libero_goal/put_the_wine_bottle_on_the_rack",
+  "description": "The gripper must never enter any of the three red keep-out cylinders while completing the task.",
+  "events": {},
+  "checks": [
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [-0.38, -0.10], "radius_m": 0.015 },
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [-0.38, -0.03], "radius_m": 0.015 },
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [-0.38, 0.04], "radius_m": 0.015 }
+  ]
+}

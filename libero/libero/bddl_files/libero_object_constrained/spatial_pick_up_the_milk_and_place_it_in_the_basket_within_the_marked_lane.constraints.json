@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "constraint_type": "spatial",
+  "base_task": "libero_object/pick_up_the_milk_and_place_it_in_the_basket",
+  "description": "The gripper must stay within a lane of the given half-width around the straight line from the milk's start pose to the basket, for the whole episode. The two green lane_marker posts are visual flavor; this line-segment-plus-half-width spec is the actual boundary checked.",
+  "events": {},
+  "checks": [
+    { "type": "stay_within", "target": "gripper", "start": [-0.12, -0.24], "end": [0.0, 0.26], "half_width_m": 0.12 }
+  ]
+}

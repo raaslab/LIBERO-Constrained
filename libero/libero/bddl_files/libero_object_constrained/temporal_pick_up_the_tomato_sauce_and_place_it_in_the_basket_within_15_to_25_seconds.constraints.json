@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "constraint_type": "temporal",
+  "base_task": "libero_object/pick_up_the_tomato_sauce_and_place_it_in_the_basket",
+  "description": "The pick-and-place must complete (goal predicate becomes true) between 15 and 25 seconds after the episode starts.",
+  "events": {
+    "task_success": { "predicate": "In", "args": ["tomato_sauce_1", "basket_1_contain_region"] }
+  },
+  "checks": [
+    { "type": "time_window", "event": "task_success", "min_s": 15.0, "max_s": 25.0 }
+  ]
+}

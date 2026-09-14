@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "constraint_type": "logical",
+  "base_task": "libero_object/pick_up_the_ketchup_and_place_it_in_the_basket",
+  "description": "The bbq sauce must never be displaced from its starting pose during the episode (not merely 'not in the basket' at the end, which is all the native :goal's (Not (In bbq_sauce_1 ...)) can check).",
+  "events": {},
+  "checks": [
+    { "type": "no_displacement", "object": "bbq_sauce_1", "tolerance_m": 0.03 }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "constraint_type": "logical",
+  "base_task": "libero_goal/put_the_wine_bottle_on_the_rack",
+  "description": "If the gripper ever comes within 0.15m of the stove during the episode, the wine bottle must end on top of the cabinet instead of the rack; otherwise it must end on the rack.",
+  "events": {
+    "near_stove": { "type": "proximity", "target": "gripper", "reference": "flat_stove_1", "threshold_m": 0.15 },
+    "on_rack": { "predicate": "On", "args": ["wine_bottle_1", "wine_rack_1_top_region"] },
+    "on_cabinet": { "predicate": "On", "args": ["wine_bottle_1", "wooden_cabinet_1_top_side"] }
+  },
+  "checks": [
+    {
+      "type": "conditional_branch",
+      "trigger": "near_stove",
+      "trigger_time": "ever",
+      "goal_if_true": "on_cabinet",
+      "goal_if_false": "on_rack"
+    }
+  ]
+}

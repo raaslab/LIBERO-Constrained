@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "constraint_type": "spatial",
+  "base_task": "libero_goal/open_the_top_drawer_and_put_the_bowl_inside",
+  "description": "The gripper must never enter any of the three red keep-out cylinders while completing the task.",
+  "events": {},
+  "checks": [
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [0.195, -0.115], "radius_m": 0.015 },
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [0.195, 0.015], "radius_m": 0.015 },
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [0.18, -0.05], "radius_m": 0.015 }
+  ]
+}

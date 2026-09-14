@@ -1,21 +1,12 @@
 {
+  "schema_version": 1,
   "constraint_type": "temporal",
   "base_task": "spatial_pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_while_avoiding_the_red_obstacles",
   "description": "The pick-and-place must complete (goal predicate becomes true) between 20 and 30 seconds after the episode starts.",
-  "time_unit": "seconds",
-  "reference": "episode_start",
   "events": {
-    "task_success": {
-      "predicate": "On",
-      "args": ["akita_black_bowl_1", "plate_1"]
-    }
+    "task_success": { "predicate": "On", "args": ["akita_black_bowl_1", "plate_1"] }
   },
-  "constraints": [
-    {
-      "event": "task_success",
-      "bound": "within",
-      "min": 20.0,
-      "max": 30.0
-    }
+  "checks": [
+    { "type": "time_window", "event": "task_success", "min_s": 20.0, "max_s": 30.0 }
   ]
 }

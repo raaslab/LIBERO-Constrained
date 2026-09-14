@@ -1,23 +1,19 @@
 {
+  "schema_version": 1,
   "constraint_type": "logical",
-  "description": "If the bowl (or gripper) ever comes within 0.15m of the stove at any point during the episode, the bowl must end on the plate instead of in the drawer; otherwise it must end in the top drawer of the cabinet.",
-  "reference": "episode",
-  "trigger": {
-    "name": "near_stove",
-    "type": "proximity",
-    "reference_body": "akita_black_bowl_1",
-    "target": "flat_stove_1",
-    "threshold_m": 0.15
+  "description": "If the bowl ever comes within 0.15m of the stove during the episode, it must end on the plate instead of in the drawer; otherwise it must end in the top drawer of the cabinet.",
+  "events": {
+    "near_stove": { "type": "proximity", "target": "akita_black_bowl_1", "reference": "flat_stove_1", "threshold_m": 0.15 },
+    "in_drawer": { "predicate": "In", "args": ["akita_black_bowl_1", "wooden_cabinet_1_top_region"] },
+    "on_plate": { "predicate": "On", "args": ["akita_black_bowl_1", "plate_1"] }
   },
-  "branches": [
+  "checks": [
     {
-      "condition": "not near_stove",
-      "goal": { "predicate": "In", "args": ["akita_black_bowl_1", "wooden_cabinet_1_top_region"] }
-    },
-    {
-      "condition": "near_stove",
-      "goal": { "predicate": "On", "args": ["akita_black_bowl_1", "plate_1"] }
+      "type": "conditional_branch",
+      "trigger": "near_stove",
+      "trigger_time": "ever",
+      "goal_if_true": "on_plate",
+      "goal_if_false": "in_drawer"
     }
-  ],
-  "note": "The .bddl file's native :goal is a coarse (Or drawer-goal plate-goal) stand-in for the engine's built-in check_success(), which has no trajectory memory and can't evaluate the trigger. Correctly verifying which branch was actually required needs a trigger-aware checker that tracks bowl-to-stove distance over the full episode (not yet implemented)."
+  ]
 }

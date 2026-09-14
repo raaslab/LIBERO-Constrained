@@ -1,0 +1,13 @@
+{
+  "constraint_type": "logical",
+  "base_task": "libero_object/pick_up_the_butter_and_place_it_in_the_basket",
+  "description": "Either the butter or the orange juice must end in the basket. The .bddl goal (Or ...) accepts either as sufficient. A stricter future checker could additionally require the choice to match whichever object started closer to the gripper/end-effector at episode start.",
+  "events": {
+    "butter_success": { "predicate": "In", "args": ["butter_1", "basket_1_contain_region"] },
+    "orange_juice_success": { "predicate": "In", "args": ["orange_juice_1", "basket_1_contain_region"] }
+  },
+  "constraints": [
+    { "event": "butter_success", "bound": "or", "with": "orange_juice_success" }
+  ],
+  "strict_variant_note": "Determine 'closer at start' via initial Euclidean distance from robot0_eef_pos to butter_1 vs orange_juice_1; the expected branch is whichever is smaller."
+}

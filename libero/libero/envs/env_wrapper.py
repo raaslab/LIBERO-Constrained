@@ -103,6 +103,13 @@ class ControlEnv:
     def check_success(self):
         return self.env._check_success()
 
+    def check_constraints(self):
+        """None if the task has no <bddl>.constraints.json sidecar; otherwise
+        {"violated": bool, "checks": [...]} evaluated against the rollout
+        logged so far -- independent of check_success(), so a run can be a
+        task success that still violated its constraint (or vice versa)."""
+        return self.env.check_constraints()
+
     @property
     def _visualizations(self):
         return self.env._visualizations

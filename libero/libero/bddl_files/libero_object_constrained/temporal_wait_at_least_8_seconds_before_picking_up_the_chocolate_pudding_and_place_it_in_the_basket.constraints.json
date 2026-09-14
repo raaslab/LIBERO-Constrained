@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "constraint_type": "temporal",
+  "base_task": "libero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket",
+  "description": "The chocolate pudding must not be picked up before 8 seconds into the episode.",
+  "note": "No dedicated 'Grasped' predicate exists in this engine; using a 'displaced from start pose' proxy for 'has been picked up'.",
+  "events": {
+    "pudding_moved": { "type": "displaced", "object": "chocolate_pudding_1", "tolerance_m": 0.02 }
+  },
+  "checks": [
+    { "type": "time_window", "event": "pudding_moved", "min_s": 8.0 }
+  ]
+}

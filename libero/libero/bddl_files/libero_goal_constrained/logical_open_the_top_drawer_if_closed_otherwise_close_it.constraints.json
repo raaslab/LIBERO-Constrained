@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "constraint_type": "logical",
+  "base_task": "libero_goal/open_the_top_drawer_and_put_the_bowl_inside",
+  "description": "If the top drawer starts closed, it must end open; if it starts open, it must end closed.",
+  "note": "This instantiation's :init fixes the drawer to start open (BDDL has no per-episode randomized joint state, only randomized object placement), so the branch is deterministic here -- but the conditional_branch check below still exercises the general 'act on the actual starting state, don't assume' mechanism, and would generalize correctly if a future variant randomizes the start state.",
+  "events": {
+    "starts_open": { "predicate": "Open", "args": ["wooden_cabinet_1_top_region"] },
+    "ends_open": { "predicate": "Open", "args": ["wooden_cabinet_1_top_region"] },
+    "ends_closed": { "predicate": "Close", "args": ["wooden_cabinet_1_top_region"] }
+  },
+  "checks": [
+    {
+      "type": "conditional_branch",
+      "trigger": "starts_open",
+      "trigger_time": "initial",
+      "goal_if_true": "ends_closed",
+      "goal_if_false": "ends_open"
+    }
+  ]
+}

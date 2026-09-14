@@ -13,6 +13,11 @@ import robosuite.macros as macros
 import mujoco
 
 import libero.libero.envs.bddl_utils as BDDLUtils
+from libero.libero.utils.constraint_checker import (
+    evaluate_constraints,
+    event_names_in_spec,
+    load_constraint_spec,
+)
 from libero.libero.envs.robots import *
 from libero.libero.envs.utils import *
 from libero.libero.envs.object_states import *
@@ -125,6 +130,15 @@ class BDDLBaseDomain(SingleArmEnv):
         self.parsed_problem = BDDLUtils.robosuite_parse_problem(self.bddl_file_name)
 
         self.obj_of_interest = self.parsed_problem["obj_of_interest"]
+
+        # Sidecar constraint spec (spatial/temporal/logical properties a
+        # BDDL :goal can't express on its own -- see constraint_checker.py).
+        # None if this task has no <bddl>.constraints.json.
+        self.constraint_spec = load_constraint_spec(self.bddl_file_name)
+        self.constraint_event_names = (
+            event_names_in_spec(self.constraint_spec) if self.constraint_spec else []
+        )
+        self.constraint_trajectory = []
 
         self._assert_problem_name()
 
@@ -806,7 +820,61 @@ class BDDLBaseDomain(SingleArmEnv):
         obs, reward, done, info = super().step(action)
         done = self._check_success()
 
+        if self.constraint_spec is not None:
+            self._log_constraint_snapshot(obs)
+
         return obs, reward, done, info
+
+    def reset(self):
+        obs = super().reset()
+        self.constraint_trajectory = []
+        if self.constraint_spec is not None:
+            self._log_constraint_snapshot(obs)
+        return obs
+
+    def _log_constraint_snapshot(self, obs):
+        """Appends one {"t", "eef_pos", "objects", "events"} snapshot for the
+        sidecar constraint checker (see constraint_checker.py). Cheap: a
+        handful of 2D positions and boolean predicate checks per step, only
+        done at all when the task actually has a constraint spec.
+        """
+        objects = {}
+        for name, state in self.object_states_dict.items():
+            try:
+                objects[name] = state.get_geom_state()["pos"][:2].tolist()
+            except (AttributeError, KeyError, TypeError):
+                continue  # site/region states aren't real trackable bodies
+
+        events = {
+            event_name: bool(
+                self._eval_predicate(
+                    [
+                        self.constraint_spec["events"][event_name]["predicate"].lower(),
+                        *self.constraint_spec["events"][event_name]["args"],
+                    ]
+                )
+            )
+            for event_name in self.constraint_event_names
+        }
+
+        self.constraint_trajectory.append(
+            {
+                "t": float(self.cur_time),
+                "eef_pos": np.asarray(obs["robot0_eef_pos"])[:2].tolist(),
+                "objects": objects,
+                "events": events,
+            }
+        )
+
+    def check_constraints(self):
+        """Evaluates the sidecar constraint spec (if any) against the
+        trajectory logged so far. Returns None if this task has no
+        constraints.json -- distinct from a spec that was checked and
+        found not violated.
+        """
+        if self.constraint_spec is None:
+            return None
+        return evaluate_constraints(self.constraint_spec, self.constraint_trajectory)
 
     def _pre_action(self, action, policy_step=False):
         super()._pre_action(action, policy_step=policy_step)

@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "constraint_type": "spatial",
+  "base_task": "libero_object/pick_up_the_ketchup_and_place_it_in_the_basket",
+  "description": "The gripper must avoid not just the three red cylinders themselves, but the whole triangular region enclosed between them.",
+  "events": {},
+  "checks": [
+    { "type": "avoid_region", "target": "gripper", "shape": "polygon", "vertices": [[0.195, 0.195], [0.16, 0.135], [0.23, 0.135]] }
+  ]
+}

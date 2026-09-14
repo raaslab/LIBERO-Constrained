@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "constraint_type": "spatial",
+  "base_task": "libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+  "description": "The gripper must never enter any of the three red keep-out cylinders while completing the task.",
+  "events": {},
+  "checks": [
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [-0.02, 0.05], "radius_m": 0.015 },
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [-0.02, 0.15], "radius_m": 0.015 },
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [-0.02, 0.25], "radius_m": 0.015 }
+  ]
+}

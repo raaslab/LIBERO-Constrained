@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "constraint_type": "temporal",
+  "base_task": "libero_goal/turn_on_the_stove",
+  "description": "The stove must be turned on within the first 5 seconds of the episode.",
+  "events": {
+    "task_success": { "predicate": "Turnon", "args": ["flat_stove_1"] }
+  },
+  "checks": [
+    { "type": "time_window", "event": "task_success", "max_s": 5.0 }
+  ]
+}
