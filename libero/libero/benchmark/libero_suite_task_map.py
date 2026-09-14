@@ -27,6 +27,14 @@ libero_task_map = {
         "logical_pick_up_the_ketchup_and_place_it_in_the_basket_without_disturbing_the_bbq_sauce",
         "logical_place_either_the_butter_or_the_orange_juice_in_the_basket",
     ],
+    "libero_goal_constrained": [
+        "spatial_put_the_wine_bottle_on_the_rack_while_avoiding_the_red_obstacles",
+        "spatial_open_the_top_drawer_and_put_the_bowl_inside_while_avoiding_the_red_obstacles",
+        "temporal_turn_on_the_stove_within_the_first_5_seconds",
+        "temporal_wait_at_least_10_seconds_before_turning_on_the_stove",
+        "logical_put_the_wine_bottle_on_the_rack_or_on_top_of_the_cabinet",
+        "logical_put_the_wine_bottle_on_the_rack_but_on_the_cabinet_if_near_the_stove",
+    ],
     "libero_object": [
         "pick_up_the_alphabet_soup_and_place_it_in_the_basket",
         "pick_up_the_cream_cheese_and_place_it_in_the_basket",

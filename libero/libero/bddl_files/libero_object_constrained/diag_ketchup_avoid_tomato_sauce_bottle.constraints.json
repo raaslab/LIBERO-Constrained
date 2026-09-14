@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "constraint_type": "spatial",
+  "description": "Diagnostic variant: same keep-out spot as spatial_pick_up_the_ketchup_and_place_it_in_the_basket_while_avoiding_the_red_obstacles, but the obstacle marker is a real LIBERO tomato_sauce bottle asset (seen in training) instead of the synthetic red CylinderObject (never seen in training), to test whether visual familiarity of the obstacle recovers baseline performance. Single object, not three, since the real asset's footprint is too large to fit three at this spot without overlap.",
+  "events": {},
+  "checks": [
+    { "type": "avoid_region", "target": "gripper", "shape": "circle", "center": [0.197, 0.148], "radius_m": 0.066 }
+  ]
+}

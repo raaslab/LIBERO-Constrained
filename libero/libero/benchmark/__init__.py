@@ -71,6 +71,7 @@ libero_suites = [
     "libero_10",
     "libero_spatial_constrained",
     "libero_object_constrained",
+    "libero_goal_constrained",
 ]
 task_maps = {}
 max_len = 0
@@ -246,4 +247,12 @@ class LIBERO_OBJECT_CONSTRAINED(Benchmark):
     def __init__(self, task_order_index=0):
         super().__init__(task_order_index=task_order_index)
         self.name = "libero_object_constrained"
+        self._make_benchmark()
+
+
+@register_benchmark
+class LIBERO_GOAL_CONSTRAINED(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "libero_goal_constrained"
         self._make_benchmark()
